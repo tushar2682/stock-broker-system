@@ -5,7 +5,9 @@ import java.util.List;
 import com.stock.broker.system.Exception.CustomerException;
 import com.stock.broker.system.Exception.ResourceNotFoundException;
 import com.stock.broker.system.Exception.StockException;
-
+import com.stock.broker.system.Model.Customer;
+import com.stock.broker.system.Model.Stock;
+import com.stock.broker.system.Model.Transaction;
 
 public interface CustomerService {
 	

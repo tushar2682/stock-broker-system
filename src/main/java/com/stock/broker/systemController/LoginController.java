@@ -1,6 +1,5 @@
 package com.stock.broker.systemController;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +8,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.stock.broker.system.Model.LoginDto;
+import com.stock.broker.system.Exception.LoginException;
+import com.stock.broker.system.Service.LoginService;
+
 @RestController
 public class LoginController {
 
@@ -16,7 +19,7 @@ public class LoginController {
 	private LoginService customerLogin;
 
 	@PostMapping("/login")
-	public ResponseEntity<String> logInCustomer(@RequestBody LoginDTO dto) throws LoginException {
+	public ResponseEntity<String> logInCustomer(@RequestBody LoginDto dto) throws LoginException {
 
 		String result = customerLogin.logIntoAccount(dto);
 
@@ -31,7 +34,7 @@ public class LoginController {
 	}
 
 	@PostMapping("/login/admin")
-	public ResponseEntity<String> logInAdmin(@RequestBody LoginDTO dto) throws LoginException {
+	public ResponseEntity<String> logInAdmin(@RequestBody LoginDto dto) throws LoginException {
 
 		String result = customerLogin.logIntoAccountAdmin(dto);
 

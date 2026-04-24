@@ -3,6 +3,7 @@ package com.stock.broker.system.Service;
 import java.util.List;
 
 import com.stock.broker.system.Exception.StockException;
+import com.stock.broker.system.Model.Stock;
 
 public interface AdminService {
 	public Stock addStock(Stock stock)throws StockException;

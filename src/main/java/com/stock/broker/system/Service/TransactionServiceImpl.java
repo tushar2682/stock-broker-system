@@ -2,10 +2,16 @@ package com.stock.broker.system.Service;
 import java.util.List;
 import java.util.Optional;
 
-import javax.transaction.TransactionalException;
+import org.springframework.transaction.TransactionException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.stock.broker.system.Exception.CustomerException;
+import com.stock.broker.system.Exception.ResourceNotFoundException;
+import com.stock.broker.system.Model.Transaction;
+import com.stock.broker.system.Model.Customer;
+import com.stock.broker.system.Repository.TransactionRepository;
 
 @Service
 public class TransactionServiceImpl implements TransactionService{
@@ -34,7 +40,7 @@ public class TransactionServiceImpl implements TransactionService{
 
 
 	@Override
-	public void deleteAll(List<Transaction> transactions) throws TransactionalException {
+	public void deleteAll(List<Transaction> transactions) throws TransactionException {
 		
 		transactionRepository.deleteAll(transactions);
 		

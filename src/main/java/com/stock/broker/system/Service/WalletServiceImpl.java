@@ -4,7 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.stock.broker.system.Exception.ResourceNotFoundException;
-
+import com.stock.broker.system.Model.Wallet;
+import com.stock.broker.system.Repository.WalletRepository;
 
 @Service
 public class WalletServiceImpl implements WalletService{

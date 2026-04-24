@@ -5,6 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.stock.broker.system.Exception.StockException;
+import com.stock.broker.system.Model.Stock;
+import com.stock.broker.system.Repository.AdminRepository;
+import com.stock.broker.system.Repository.SessionDao;
 
 @Service
 public class AdminServiceImpl implements AdminService{

@@ -2,15 +2,12 @@ package com.stock.broker.system.Service;
 
 import java.util.List;
 
-import javax.transaction.TransactionalException;
-
 import org.springframework.transaction.TransactionException;
 
 import com.stock.broker.system.Exception.CustomerException;
 import com.stock.broker.system.Exception.ResourceNotFoundException;
-
-import jakarta.transaction.Transaction;
-
+import com.stock.broker.system.Model.Transaction;
+import com.stock.broker.system.Model.Customer;
 
 public interface TransactionService {
 	
