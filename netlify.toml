@@ -1,0 +1,14 @@
+# Netlify Configuration File (Monorepo Root Level)
+# Used when the entire repository is selected for Netlify deployment.
+# Automatically directs Netlify to compile stock-broker-web and route paths correctly.
+
+[build]
+  base = "stock-broker-web"
+  publish = "dist"
+  command = "npm run build"
+
+[[redirects]]
+  # Redirect all routes to index.html for Single Page Application routing (react-router-dom)
+  from = "/*"
+  to = "/index.html"
+  status = 200
