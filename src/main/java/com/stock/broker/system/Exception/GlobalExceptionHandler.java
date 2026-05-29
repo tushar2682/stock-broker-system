@@ -44,6 +44,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<MyErrorDetails> handleOther(Exception ex, WebRequest req) {
+        ex.printStackTrace();
         return buildError(ex, req, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

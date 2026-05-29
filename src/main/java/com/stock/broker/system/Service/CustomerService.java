@@ -32,5 +32,9 @@ public interface CustomerService {
 
 	public void delete(Customer customer)throws CustomerException;
 
+	public Customer depositFunds(Integer customerId, double amount) throws CustomerException, ResourceNotFoundException;
+
+	public Customer withdrawFunds(Integer customerId, double amount) throws CustomerException, ResourceNotFoundException;
+
 	
 }

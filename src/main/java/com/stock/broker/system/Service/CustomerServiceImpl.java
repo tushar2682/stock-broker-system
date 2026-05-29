@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.stock.broker.system.Exception.CustomerException;
 import com.stock.broker.system.Exception.ResourceNotFoundException;
@@ -98,6 +99,7 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
+	@Transactional
 	public Transaction buyStockByName(Integer customerId, String stockName, Integer shares)
 			throws CustomerException, StockException, ResourceNotFoundException {
 		Customer customer = cDao.findById(customerId)
@@ -139,6 +141,7 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
+	@Transactional
 	public Transaction sellStockByName(Integer customerId, String stockName, Integer shares)
 			throws CustomerException, StockException, ResourceNotFoundException {
 		Customer customer = cDao.findById(customerId).orElseThrow(() -> new CustomerException("Customer not found with id: " + customerId));
@@ -155,8 +158,12 @@ public class CustomerServiceImpl implements CustomerService {
         Integer quantityAvailableToSell=0;
         
         for (Transaction transaction : transactions) {
-			if (transaction.getStock().getStockName().equals(stockName)&&transaction.getTransactionType().equals("BUY")) {
-				quantityAvailableToSell+=transaction.getStock().getTotalQuantity();
+			if (transaction.getStock().getStockName().equals(stockName)) {
+				if (transaction.getTransactionType() == TransactionType.BUY) {
+					quantityAvailableToSell += transaction.getQuantity();
+				} else if (transaction.getTransactionType() == TransactionType.SOLD) {
+					quantityAvailableToSell -= transaction.getQuantity();
+				}
 			}
 		}
         
@@ -173,7 +180,8 @@ public class CustomerServiceImpl implements CustomerService {
         transaction.setTransactionPrice(totalPrice);
         transaction.setTransactionDate(LocalDate.now());
         
-        customer.getWallet().setBalance(totalPrice);
+        customer.getWallet().setBalance(customer.getWallet().getBalance() + totalPrice);
+        stock.setAvailableQuantity(stock.getAvailableQuantity() + shares);
         
         transactionRepository.save(transaction);
 
@@ -191,8 +199,32 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
+	@Transactional
 	public void delete(Customer customer) throws CustomerException {
 		cDao.delete(customer);
+	}
+
+	@Override
+	@Transactional
+	public Customer depositFunds(Integer customerId, double amount) throws CustomerException, ResourceNotFoundException {
+		Customer customer = findCustomerById(customerId);
+		if (amount <= 0) {
+			throw new IllegalArgumentException("Amount must be greater than 0");
+		}
+		Double prevBal = customer.getWallet().getBalance();
+		customer.getWallet().setBalance(prevBal + amount);
+		return cDao.save(customer);
+	}
+
+	@Override
+	@Transactional
+	public Customer withdrawFunds(Integer customerId, double amount) throws CustomerException, ResourceNotFoundException {
+		Customer customer = findCustomerById(customerId);
+		if (customer.getWallet().getBalance() < amount) {
+			throw new ResourceNotFoundException("Customer has insufficient balance to withdraw the given amount.");
+		}
+		customer.getWallet().setBalance(customer.getWallet().getBalance() - amount);
+		return cDao.save(customer);
 	}
 
 	
