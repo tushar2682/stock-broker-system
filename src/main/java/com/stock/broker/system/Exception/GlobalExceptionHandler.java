@@ -36,10 +36,21 @@ public class GlobalExceptionHandler {
     public ResponseEntity<MyErrorDetails> handleResource(ResourceNotFoundException ex, WebRequest req) {
         return buildError(ex, req, HttpStatus.NOT_FOUND);
     }
-
     @ExceptionHandler(LoginException.class)
     public ResponseEntity<MyErrorDetails> handleLogin(LoginException ex, WebRequest req) {
         return buildError(ex, req, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(org.springframework.web.bind.MethodArgumentNotValidException.class)
+    public ResponseEntity<MyErrorDetails> handleValidation(org.springframework.web.bind.MethodArgumentNotValidException ex, WebRequest req) {
+        String errorMsg = ex.getBindingResult().getFieldErrors().stream()
+                .map(err -> err.getDefaultMessage())
+                .collect(java.util.stream.Collectors.joining(", "));
+        MyErrorDetails err = new MyErrorDetails();
+        err.setTimestamp(LocalDateTime.now());
+        err.setMessage(errorMsg);
+        err.setDetails(req.getDescription(false));
+        return new ResponseEntity<>(err, org.springframework.http.HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)
