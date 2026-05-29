@@ -1,0 +1,12 @@
+# Netlify Configuration File (Project Level)
+# Used when stock-broker-web is the base directory of the Netlify site.
+
+[build]
+  publish = "dist"
+  command = "npm run build"
+
+[[redirects]]
+  # Redirect all routes to index.html for Single Page Application routing (react-router-dom)
+  from = "/*"
+  to = "/index.html"
+  status = 200

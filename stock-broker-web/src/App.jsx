@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './Login';
 import Dashboard from './Dashboard';
@@ -7,12 +7,10 @@ import AdminPanel from './AdminPanel';
 
 function App() {
   const [authKey, setAuthKey] = useState(localStorage.getItem('authKey') || '');
-  const [mobileNumber, setMobileNumber] = useState('');
   const [customerId, setCustomerId] = useState(localStorage.getItem('customerId') || '');
 
   const handleLogin = (key, mobile, id) => {
     setAuthKey(key);
-    setMobileNumber(mobile);
     setCustomerId(id);
     localStorage.setItem('authKey', key);
     localStorage.setItem('customerId', id);
@@ -20,7 +18,6 @@ function App() {
 
   const handleLogout = () => {
     setAuthKey('');
-    setMobileNumber('');
     setCustomerId('');
     localStorage.removeItem('authKey');
     localStorage.removeItem('customerId');
